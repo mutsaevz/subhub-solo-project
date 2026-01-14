@@ -171,7 +171,7 @@ func (r *gormSubscriptionRepository) Delete(id string) error {
 		slog.String("id", id),
 	)
 
-	if err := r.DB.Delete(&dto.SubscriptionResponse{}, "id = ?", id).Error; err != nil {
+	if err := r.DB.Delete(&models.Subscription{}, "id = ?", id).Error; err != nil {
 		r.logger.Error("db error", slog.String("op", op), slog.Any("error", err))
 		return err
 	}
@@ -218,7 +218,7 @@ func (r *gormSubscriptionRepository) GetModelByID(id string) (*models.Subscripti
 		slog.Any("id", id),
 	)
 
-	if err := r.DB.First(subscription, id).Error; err != nil {
+	if err := r.DB.First(&subscription, "id = ?", id).Error; err != nil {
 		r.logger.Error("db error", slog.String("op", op), slog.Any("error", err))
 		return nil, err
 	}

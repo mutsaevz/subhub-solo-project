@@ -69,7 +69,7 @@ func (r *gormCategoryRepository) List(
 
 	q := r.DB.
 		WithContext(ctx).
-		Table("category").
+		Model(&models.Category{}).
 		Select(`
 	id,
 	name,
@@ -78,13 +78,6 @@ func (r *gormCategoryRepository) List(
 		Order("created_at ASC").
 		Order("id ASC").
 		Limit(limit)
-
-	if lastCreatedAt != nil && lastID != nil {
-		q = q.Where(`
-			(created_at > ?)
-			OR (created_at = ? AND id > ?)
-		`, *lastCreatedAt, *lastCreatedAt, *lastID)
-	}
 
 	if lastCreatedAt != nil && lastID != nil {
 		q = q.Where(`

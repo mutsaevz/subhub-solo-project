@@ -142,7 +142,7 @@ func (r *gormPaymentRepository) Delete(id string) error {
 		slog.String("id", id),
 	)
 
-	if err := r.DB.Delete(&models.Service{}, "id = ?", id).Error; err != nil {
+	if err := r.DB.Delete(&models.Payment{}, "id = ?", id).Error; err != nil {
 		r.logger.Error("db error", slog.String("op", op), slog.Any("error", err))
 		return err
 	}

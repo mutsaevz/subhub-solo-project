@@ -1,34 +1,29 @@
+version: "3.9"
+
 services:
   app:
     build: .
-    container_name: go-app
     ports:
-      - "8081:8080"
+      - "8080:8080"
     env_file:
-      - .env.docker
+      - .env
     depends_on:
       - postgres
-      - redis
-    restart: unless-stopped
 
   postgres:
-    image: postgres:16-alpine
-    container_name: postgres
+    image: postgres:15
     environment:
-      POSTGRES_DB: effective_db
-      POSTGRES_USER: zubajrmucaev
-      POSTGRES_PASSWORD: 280908
-    volumes:
-      - pg_data:/var/lib/postgresql/data
+      POSTGRES_DB: subscriptions
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
     ports:
       - "5432:5432"
 
-  redis:
-    image: redis:7-alpine
-    container_name: redis
+  swagger:
+    image: swaggerapi/swagger-ui
+    ports:
+      - "8081:8080"
     volumes:
-      - redis_data:/data
-
-volumes:
-  pg_data:
-  redis_data:
+      - ./swagger.yaml:/swagger/swagger.yaml
+    environment:
+      SWAGGER_JSON: /swagger/swagger.yaml

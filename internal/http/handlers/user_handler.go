@@ -34,6 +34,7 @@ func (h *UserHandler) RegisterRoutes(r *gin.RouterGroup) {
 	admin.Use(middleware.RequireRole("admin"))
 
 	admin.POST("", h.Create)
+	admin.GET("/email", h.GetByEmail)
 	admin.GET("", h.List)
 	admin.GET("/:id", h.GetByID)
 	admin.PUT("/:id", h.Update)
@@ -167,4 +168,16 @@ func (h *UserHandler) Delete(c *gin.Context) {
 	}
 
 	c.Status(http.StatusNoContent)
+}
+
+func (h *UserHandler) GetByEmail(c *gin.Context) {
+	email := c.Query("email")
+
+	user, err := h.userService.GetByEmail(email)
+	if err != nil {
+		h.logger.Error("handler.user.get_by_email: failed to get user", slog.Any("error", err))
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "failed to get user"})
+		return
+	}
+	c.JSON(http.StatusOK, user)
 }

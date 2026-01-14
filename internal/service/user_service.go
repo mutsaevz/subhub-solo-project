@@ -27,6 +27,8 @@ type UserService interface {
 
 	GetByID(id string) (*models.User, error)
 
+	GetByEmail(email string) (*models.User, error)
+
 	Update(id string, user *dto.UserUpdateRequest) (*models.User, error)
 
 	Delete(id string) error
@@ -53,10 +55,23 @@ func NewUserService(
 }
 
 func (s *userService) Create(req *dto.UserCreateRequest) (*models.User, error) {
+	hashed, err := hashPassword(req.Password)
+	if err != nil {
+		s.logger.Error("service.user.create: failed to hash password", slog.Any("error", err))
+		return nil, err
+	}
+
+	role := req.Role
+	if role == "" {
+		role = models.RoleUser
+	}
+
 	user := &models.User{
 		FirstName: req.FirstName,
 		LastName:  req.LastName,
 		Email:     req.Email,
+		Password:  hashed,
+		Roles:     role,
 	}
 
 	if err := s.repo.Create(user); err != nil {
@@ -217,4 +232,14 @@ func hashPassword(plain string) (string, error) {
 	}
 
 	return string(hash), nil
+}
+
+func (s *userService) GetByEmail(email string) (*models.User, error) {
+	user, err := s.repo.GetByEmail(email)
+	if err != nil {
+		s.logger.Error("failed to get user by email in repo", "error", err, "email", email)
+		return nil, err
+	}
+
+	return user, nil
 }

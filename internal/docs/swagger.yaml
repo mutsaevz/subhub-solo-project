@@ -1,0 +1,493 @@
+openapi: 3.0.3
+
+info:
+  title: Subscription Aggregation API
+  description: |
+    REST-сервис для агрегации данных об онлайн-подписках пользователей.
+    Тестовое задание Junior Golang Developer (Effective Mobile).
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:8080
+
+tags:
+  - name: Auth
+  - name: Users
+  - name: Subscriptions
+  - name: Services
+  - name: Categories
+  - name: Orders
+  - name: Payments
+
+security:
+  - BearerAuth: []
+
+paths:
+
+  # ---------------- AUTH ----------------
+
+  /auth/register:
+    post:
+      tags: [Auth]
+      summary: Регистрация пользователя
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterRequest'
+      responses:
+        "201":
+          description: Пользователь зарегистрирован
+
+  /auth/login:
+    post:
+      tags: [Auth]
+      summary: Авторизация
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        "200":
+          description: Успешный вход
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+
+  /auth/refresh:
+    post:
+      tags: [Auth]
+      summary: Обновление access token
+      responses:
+        "200":
+          description: Токен обновлён
+
+  /auth/logout:
+    post:
+      tags: [Auth]
+      summary: Выход из системы
+      responses:
+        "204":
+          description: Выход выполнен
+
+  /auth/me:
+    get:
+      tags: [Auth]
+      summary: Получить текущего пользователя
+      responses:
+        "200":
+          description: Данные пользователя
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+
+    put:
+      tags: [Auth]
+      summary: Обновить профиль
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateUserRequest'
+      responses:
+        "200":
+          description: Профиль обновлён
+
+  /auth/me/password:
+    put:
+      tags: [Auth]
+      summary: Смена пароля
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChangePasswordRequest'
+      responses:
+        "204":
+          description: Пароль изменён
+
+  # ---------------- USERS (ADMIN) ----------------
+
+  /users:
+    get:
+      tags: [Users]
+      summary: Список пользователей
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+
+    post:
+      tags: [Users]
+      summary: Создать пользователя (admin)
+      responses:
+        "201":
+          description: Создано
+
+  /users/{id}:
+    get:
+      tags: [Users]
+      summary: Получить пользователя
+      parameters:
+        - $ref: '#/components/parameters/ID'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+
+    put:
+      tags: [Users]
+      summary: Обновить пользователя
+      parameters:
+        - $ref: '#/components/parameters/ID'
+      responses:
+        "200":
+          description: Обновлено
+
+    delete:
+      tags: [Users]
+      summary: Удалить пользователя
+      parameters:
+        - $ref: '#/components/parameters/ID'
+      responses:
+        "204":
+          description: Удалено
+
+  # ---------------- SUBSCRIPTIONS ----------------
+
+  /subscriptions:
+    post:
+      tags: [Subscriptions]
+      summary: Создать подписку
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateSubscriptionRequest'
+      responses:
+        "201":
+          description: Подписка создана
+
+    get:
+      tags: [Subscriptions]
+      summary: Получить список подписок
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Subscription'
+
+  /subscriptions/total:
+    get:
+      tags: [Subscriptions]
+      summary: Подсчёт суммарной стоимости подписок
+      parameters:
+        - name: user_id
+          in: query
+          schema:
+            type: string
+            format: uuid
+        - name: service_name
+          in: query
+          schema:
+            type: string
+        - name: from
+          in: query
+          example: "01-2025"
+        - name: to
+          in: query
+          example: "12-2025"
+      responses:
+        "200":
+          description: Итоговая сумма
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TotalResponse'
+
+  /subscriptions/{id}:
+    get:
+      tags: [Subscriptions]
+      summary: Получить подписку
+      parameters:
+        - $ref: '#/components/parameters/ID'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Subscription'
+
+    put:
+      tags: [Subscriptions]
+      summary: Обновить подписку (admin)
+      parameters:
+        - $ref: '#/components/parameters/ID'
+      responses:
+        "200":
+          description: Обновлено
+
+    delete:
+      tags: [Subscriptions]
+      summary: Удалить подписку (admin)
+      parameters:
+        - $ref: '#/components/parameters/ID'
+      responses:
+        "204":
+          description: Удалено
+
+  # ---------------- SERVICES ----------------
+
+  /services:
+    get:
+      tags: [Services]
+      summary: Список сервисов
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Service'
+
+    post:
+      tags: [Services]
+      summary: Создать сервис (admin)
+      responses:
+        "201":
+          description: Создано
+
+  /services/{id}:
+    get:
+      tags: [Services]
+      summary: Получить сервис
+      parameters:
+        - $ref: '#/components/parameters/ID'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Service'
+
+    put:
+      tags: [Services]
+      summary: Обновить сервис (admin)
+      parameters:
+        - $ref: '#/components/parameters/ID'
+      responses:
+        "200":
+          description: Обновлено
+
+    delete:
+      tags: [Services]
+      summary: Удалить сервис (admin)
+      parameters:
+        - $ref: '#/components/parameters/ID'
+      responses:
+        "204":
+          description: Удалено
+
+  # ---------------- CATEGORIES ----------------
+
+  /categories:
+    get:
+      tags: [Categories]
+      summary: Список категорий
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Category'
+
+    post:
+      tags: [Categories]
+      summary: Создать категорию (admin)
+      responses:
+        "201":
+          description: Создано
+
+  /categories/{id}:
+    get:
+      tags: [Categories]
+      summary: Получить категорию
+      parameters:
+        - $ref: '#/components/parameters/ID'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Category'
+
+    put:
+      tags: [Categories]
+      summary: Обновить категорию (admin)
+      parameters:
+        - $ref: '#/components/parameters/ID'
+      responses:
+        "200":
+          description: Обновлено
+
+    delete:
+      tags: [Categories]
+      summary: Удалить категорию (admin)
+      parameters:
+        - $ref: '#/components/parameters/ID'
+      responses:
+        "204":
+          description: Удалено
+
+components:
+
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  parameters:
+    ID:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+
+  schemas:
+
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        email:
+          type: string
+        role:
+          type: string
+
+    Subscription:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        service_name:
+          type: string
+        price:
+          type: integer
+          example: 400
+        user_id:
+          type: string
+          format: uuid
+        start_date:
+          type: string
+          example: "07-2025"
+        end_date:
+          type: string
+          nullable: true
+
+    CreateSubscriptionRequest:
+      type: object
+      required: [service_name, price, user_id, start_date]
+      properties:
+        service_name:
+          type: string
+        price:
+          type: integer
+        user_id:
+          type: string
+          format: uuid
+        start_date:
+          type: string
+          example: "07-2025"
+
+    TotalResponse:
+      type: object
+      properties:
+        total:
+          type: integer
+          example: 1200
+
+    Service:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+
+    Category:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+
+    RegisterRequest:
+      type: object
+      required: [email, password]
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+
+    LoginRequest:
+      type: object
+      required: [email, password]
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+
+    AuthResponse:
+      type: object
+      properties:
+        access_token:
+          type: string
+        refresh_token:
+          type: string
+
+    UpdateUserRequest:
+      type: object
+      properties:
+        email:
+          type: string
+
+    ChangePasswordRequest:
+      type: object
+      properties:
+        old_password:
+          type: string
+        new_password:
+          type: string

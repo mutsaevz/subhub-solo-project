@@ -36,6 +36,7 @@ func (h *SubscriptionHandler) RegisterRoutes(r *gin.RouterGroup) {
 	admin.Use(middleware.RequireRole("admin"))
 
 	subscriptions.POST("", h.Create)
+	subscriptions.GET("/total", h.GetTotal)
 	subscriptions.GET("", h.List)
 	subscriptions.GET("/:id", h.GetByID)
 	admin.PUT("/:id", h.Update)
@@ -187,26 +188,26 @@ func (h *SubscriptionHandler) GetTotal(c *gin.Context) {
 		return
 	}
 
-	var userID *uuid.UUID
+	var userID uuid.UUID
 	if v := c.Query("user_id"); v != "" {
 		id, err := uuid.Parse(v)
 		if err != nil {
 			c.JSON(400, gin.H{"error": "invalid user_id"})
 			return
 		}
-		userID = &id
+		userID = id
 	}
 
-	var serviceName *string
+	var serviceName string
 	if v := c.Query("service_name"); v != "" {
-		serviceName = &v
+		serviceName = v
 	}
 
 	total, err := h.subscriptionService.CalculateTotal(c.Request.Context(), dto.TotalFilter{
 		From:        from,
 		To:          to,
-		UserID:      *userID,
-		ServiceName: *serviceName,
+		UserID:      userID,
+		ServiceName: serviceName,
 	})
 	if err != nil {
 		c.JSON(500, gin.H{"error": err.Error()})
@@ -222,7 +223,6 @@ func parseMonth(value string) (time.Time, error) {
 		return time.Time{}, err
 	}
 
-	// нормализуем: первое число месяца
 	return time.Date(
 		t.Year(),
 		t.Month(),
