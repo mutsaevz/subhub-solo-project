@@ -1,0 +1,5 @@
+.env.local
+.env.docker
+/bin/
+/tmp/
+cmd/seed/*.go

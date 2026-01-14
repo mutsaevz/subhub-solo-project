@@ -1,0 +1,34 @@
+services:
+  app:
+    build: .
+    container_name: go-app
+    ports:
+      - "8081:8080"
+    env_file:
+      - .env.docker
+    depends_on:
+      - postgres
+      - redis
+    restart: unless-stopped
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: postgres
+    environment:
+      POSTGRES_DB: effective_db
+      POSTGRES_USER: zubajrmucaev
+      POSTGRES_PASSWORD: 280908
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  redis:
+    image: redis:7-alpine
+    container_name: redis
+    volumes:
+      - redis_data:/data
+
+volumes:
+  pg_data:
+  redis_data:
