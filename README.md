@@ -36,17 +36,18 @@
 
 HTTP (Gin handlers)
 
-↓
+        ↓
 
 Service (business logic)
 
-↓
+        ↓
 
 Repository (data access)
 
-↓
+        ↓
 
 PostgreSQL / Redis
+
 
 Такой подход позволяет:
 - тестировать бизнес-логику изолированно  
