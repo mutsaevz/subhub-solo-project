@@ -4,5 +4,5 @@
 tmp
 bin
 *.log
-.env.local
+.env
 .env.docker
