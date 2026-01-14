@@ -35,11 +35,17 @@
 Проект построен с использованием **Clean Architecture**:
 
 HTTP (Gin handlers)
+
 ↓
+
 Service (business logic)
+
 ↓
+
 Repository (data access)
+
 ↓
+
 PostgreSQL / Redis
 
 Такой подход позволяет:
