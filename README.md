@@ -65,19 +65,6 @@ PostgreSQL / Redis
 
 ---
 
-## ✅ Индикаторы качества реализации
-
-- [x] Clean Architecture  
-- [x] Разделение `handler / service / repository`  
-- [x] Интерфейсы и слабая связанность  
-- [x] Redis-кеширование с инвалидацией  
-- [x] JWT-аутентификация и роли  
-- [x] Unit-тесты сервисного слоя  
-- [x] Docker и docker-compose  
-- [x] Swagger-документация  
-
----
-
 <p align="center">
   <strong>
     Проект демонстрирует не только знание Go,<br>
