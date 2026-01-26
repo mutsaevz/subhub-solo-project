@@ -1,21 +1,7 @@
----
-
-<p align="center">
-  <strong>Effective Mobile — Test Assignment</strong><br>
-  <sub>REST API for subscription aggregation</sub>
-</p>
-
----
 
 ## 📍 Контекст проекта
 
-Данный проект реализован в рамках тестового задания на позицию **Junior Golang Developer**.
 
-При этом при разработке был сделан **осознанный акцент не на минимальное выполнение требований**,  
-а на применение архитектурных и инженерных практик, используемых в production-разработке.
-
-> Цель проекта — продемонстрировать подход к проектированию backend-сервисов,  
-> качество архитектуры и понимание жизненного цикла приложения.
 
 --
 
@@ -41,14 +27,16 @@ PostgreSQL / Redis
 ---
 
 <p>
-  <img alt="Go" src="https://img.shields.io/badge/-Golang-00ADD8?style=for-the-badge&logo=go&logoColor=white" />
+  <img alt="Golang" src="https://img.shields.io/badge/-Golang-00ADD8?style=for-the-badge&logo=go&logoColor=white" />
   <img alt="Gin" src="https://img.shields.io/badge/-Gin-008ECF?style=for-the-badge&logo=gin&logoColor=white" />
   <img alt="GORM" src="https://img.shields.io/badge/-GORM-2D3748?style=for-the-badge&logo=go&logoColor=white" />
   <img alt="PostgreSQL" src="https://img.shields.io/badge/-PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white" />
   <img alt="Redis" src="https://img.shields.io/badge/-Redis-DC382D?style=for-the-badge&logo=redis&logoColor=white" />
-  <img alt="Docker" src="https://img.shields.io/badge/-Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white" />
-  <img alt="Swagger" src="https://img.shields.io/badge/-Swagger-85EA2D?style=for-the-badge&logo=swagger&logoColor=black" />
+  <img alt="REST API" src="https://img.shields.io/badge/-REST_API-005571?style=for-the-badge&logo=fastapi&logoColor=white" />
   <img alt="JWT" src="https://img.shields.io/badge/-JWT-000000?style=for-the-badge&logo=jsonwebtokens&logoColor=white" />
+  <img alt="Docker" src="https://img.shields.io/badge/-Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white" />
+  <img alt="Docker Compose" src="https://img.shields.io/badge/-Docker_Compose-2496ED?style=for-the-badge&logo=docker&logoColor=white" />
+  <img alt="Swagger" src="https://img.shields.io/badge/-Swagger_(OpenAPI)-85EA2D?style=for-the-badge&logo=swagger&logoColor=black" />
   <img alt="Unit Tests" src="https://img.shields.io/badge/-Unit_Tests-25A162?style=for-the-badge&logo=go&logoColor=white" />
 </p>
 
