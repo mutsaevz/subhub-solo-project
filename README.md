@@ -48,6 +48,8 @@ PostgreSQL / Redis
   <img alt="Redis" src="https://img.shields.io/badge/-Redis-DC382D?style=for-the-badge&logo=redis&logoColor=white" />
   <img alt="Docker" src="https://img.shields.io/badge/-Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white" />
   <img alt="Swagger" src="https://img.shields.io/badge/-Swagger-85EA2D?style=for-the-badge&logo=swagger&logoColor=black" />
+  <img alt="JWT" src="https://img.shields.io/badge/-JWT-000000?style=for-the-badge&logo=jsonwebtokens&logoColor=white" />
+  <img alt="Unit Tests" src="https://img.shields.io/badge/-Unit_Tests-25A162?style=for-the-badge&logo=go&logoColor=white" />
 </p>
 
 ---
