@@ -26,6 +26,8 @@ PostgreSQL / Redis
 
 ---
 
+## 💻 Технологический стек
+
 <p>
   <img alt="Golang" src="https://img.shields.io/badge/-Golang-00ADD8?style=for-the-badge&logo=go&logoColor=white" />
   <img alt="Gin" src="https://img.shields.io/badge/-Gin-008ECF?style=for-the-badge&logo=gin&logoColor=white" />
